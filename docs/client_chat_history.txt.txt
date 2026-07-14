@@ -1,0 +1,293 @@
+rafaelgarcia142
+
+Jun 29, 5:22 AM
+Forgot to ask, do you do python automotive projects?
+
+O
+Profile Image
+Me
+
+Jun 29, 4:12 PM
+Hey Rafael, thanks. For two stock reports, it would be around $350-$400, depending on the scope and level of analysis required.
+
+O
+Profile Image
+Me
+
+Jun 29, 4:55 PM
+I'd be able to give you an accurate quote once I know which stocks you're looking at.
+
+And yes, I do Python projects. I have my Bachelor's in Data Science and work on Python solutions related to finance, automation, AI/ML, bots.
+
+O
+Profile Image
+Me
+
+Jun 29, 4:55 PM
+Let me know what you have in mind.
+
+R
+rafaelgarcia142
+
+Jun 29, 6:50 PM
+The stocks are MBLY/ON tickers and I'll send you a detailed layout of what I nede help on with my python project
+
+R
+rafaelgarcia142
+
+Jun 29, 7:03 PM
+I forgot to add GEV stock
+
+O
+Profile Image
+Me
+
+Jun 29, 7:31 PM
+Sounds good. Send me the details, and I’ll review everything and get back to you
+
+R
+rafaelgarcia142
+
+Jun 29, 7:45 PM
+Here is a simple explanation of more less what i would like to accomplish
+
+
+Untitled document.pdf
+
+(104.48 kB)
+
+O
+Profile Image
+Me
+
+Jun 29, 8:23 PM
+
+O
+Profile Image
+Me
+
+Jun 29, 8:36 PM
+went through the brief and I have a clear understanding of the architecture and MVP you're aiming for. Its well within my expertise, and I would be happy to build it.
+
+O
+Profile Image
+Me
+
+Jun 29, 9:25 PM
+For the stock analysis, I can do MBLY, ON, and GEV for $500.
+
+Before I put together a quote for the Python diagnostic tool, could you let me know your target budget and timeline for the project?
+
+R
+rafaelgarcia142
+
+Jun 30, 4:28 AM
+I really have quoted/have a price for this project but I do need the best price I can get on it. On time frame , more less how how would a project like this take ? On the stock analysis let me choose the stock which I prefer
+
+R
+rafaelgarcia142
+
+Jun 30, 4:28 AM
+havent
+
+O
+Profile Image
+Me
+
+Jun 30, 5:24 AM
+I’ve carefully reviewed the project brief, and based on the current scope, I can complete the MVP within 10–14 days. My quote for the project is $650 for the scope outlined in the PDF. If any additional features are required beyond the brief, we can discuss them separately. If the PDF represents the complete scope, I’m ready to get started as soon as you are.
+
+R
+rafaelgarcia142
+
+Jun 30, 11:46 PM
+Give me a couple of days to review whats missing on my pdf and we will move forward.
+
+O
+Profile Image
+Me
+
+Jul 01, 12:03 AM
+sounds good. Looking forward to it.
+
+O
+Profile Image
+Me
+
+Jul 01, 12:17 AM
+Have you decided on the stocks you’d like me to analyze?
+
+R
+rafaelgarcia142
+
+Jul 02, 12:58 AM
+Not yet give me a few days
+
+O
+Profile Image
+Me
+
+Jul 11, 9:44 PM
+Hi Rafael, any updates?
+
+R
+rafaelgarcia142
+
+Jul 12, 8:23 PM
+Hey, I want to start on the MVP project but I think I need to revise the MVP , there are some detailed steps missing, but I'm working on it. As for the stocks, I think I will concentrate right now on the MVP first  and put the stocks on hold as of now. Question, do you see anything on your side  that will make faster and more detailed to get to our goal and purpose through your experience with python to make this project succeed? Maybe a different approach through different tools being used? Let me know
+
+O
+Profile Image
+Me
+
+Jul 12, 10:55 PM
+To your question, yes, I think we can move  faster. And I don't think the reason it feels like steps are missing is that the doc is thin. It's that the doc is really 3tools in one. The ICE tuning, the live OBD side, and the EV charging side are three different systems that don't actually talk to each other. So there isn't one flow to detail yet, there are three.
+
+Fastest path is to pick one, build it properly end to end, and add the others on top after. Same end goal, just in an order that actually ships.
+
+O
+Profile Image
+Me
+
+Jul 12, 11:02 PM
+on tools the ones in your doc are mostly the right ones. The problem isn't the tools, it's order.
+
+So I'd start with the EV charging side. I can build and test all of it with a fake charger and a fake backend. No hardware, no waiting. and the payment bugs you mentioned sit inside that same flow, so we cover those too.
+
+1st build: a simulated charging session where we break things on purpose. Bad auth, timeouts, dropped sessions, broken payloads. The tool catches each one and tells you what failed and why. *That failure list is the detail you feel is missing.*
+
+Iwillplan around OCPP 1.6 unless yours are on 2.0.1.
+
+Confirm the EV side or tell me if something else is more urgent & i will lay out thebuild.
+
+R
+rafaelgarcia142
+
+Jul 13, 1:55 AM
+Ok so I would like to start on the pillar A on the ICE if possible and set a plan how much more detail do I need to send you to start on this first pillar and then start and the rest of the other pillars ? If you think you dont need to much of my details and we can get to the project purpose and goal then I think I will have to leave it to your hands and see if the project moves forward, if ou think this will work this way then yes lets proceed and take a risk on this project , I will send you the details I have as of now of Pillar A in couple of hours.
+
+O
+Profile Image
+Me
+
+Jul 13, 3:10 AM
+Leave the plan and the structure to me, that's my job.
+Pillar A gets built in two stages. Foundation first Then the map work goes on top of that. 
+Send me whatever ECU details you already have nothing formal, just what you've got. it can help shape how I build the foundation.
+
+R
+rafaelgarcia142
+
+Jul 13, 3:45 AM
+ok sounds good , I havent the detailed page lets move forward
+
+R
+rafaelgarcia142
+
+Jul 13, 3:46 AM
+finished
+
+R
+rafaelgarcia142
+
+Jul 13, 3:46 AM
+let me know whats next
+
+O
+Profile Image
+Me
+
+Jul 13, 3:54 AM
+I'll send over the offer and then i will start.
+
+Edited
+
+O
+Profile Image
+Me
+
+Jul 13, 4:05 AM
+Here's your custom offer
+
+$650
+I will analyze your crypto or stock trading data and find profit opportunities
+Load and read raw ECU binary files (.bin, .hex etc)
+Hex viewer with address offsets
+Checksum validation (pass/fail) with CRC16/CRC32 support
+Clean UI 
+Built and tested on sample binary files
+Source code + short README
+
+Read more
+Your offer includes
+
+7 Days Delivery
+
+View order
+R
+rafaelgarcia142
+
+Jul 13, 4:08 AM
+so this would  quote would be for pillar A only or is it for the complete project? can we do a bin file for 2014 Dodge charger 3.6  or a 2015 Chevy Silverado 1500 5.3 for sample ?
+
+O
+Profile Image
+Me
+
+Jul 13, 4:19 AM
+For foundation stage we don't need a specific vehicle, on the Charger and Silverado though When we get to the map/tuning stage, that's where we'll want the actual dump files off those vehicles, and we'll sort out pulling those when we're there.
+
+O
+Profile Image
+Me
+
+Jul 13, 4:24 AM
+On the quote, let's make it worth it. The 650 covers Pillar A end to end Plus the EV charging pillar, which is where your payment and authorization bugs live.
+
+O
+Profile Image
+Me
+
+Jul 13, 4:25 AM
+Then we stack the remaining pillars from there as separate offers. Each one built properly rather than crammed in. You'll get something that actually holds up in the field, which is the whole point.
+
+R
+rafaelgarcia142
+
+Jul 13, 4:33 AM
+ok this is what I had barely started to put together for a step by step instructions and I think we should plug the step to extract the file instructions in the Pillar A , I forgot if I had put that on the first MVP . On the quote then we will be focused on  Pillar A end to end Plus the EV charging pillar, correct? Take A look at what have put in the pdf in case I didnt mention that step needed to get the bin file from vehicle inthe MVP. Should we move forward ?
+
+
+Untitled document (10).pdf
+
+(115.09 kB)
+
+O
+Profile Image
+Me
+
+Jul 13, 4:57 AM
+Yes, The quote covers Pillar A end to end plus the EV charging pillar.
+Went through your PDF, the extract-from-vehicle step included. It fits, I've got it.
+
+O
+Profile Image
+Me
+
+Jul 13, 5:07 AM
+Replied
+
+rafaelgarcia142
+
+Jul 13, 4:33 AM
+
+ok this is what I had barely started to put together for a step by step instructions and I think we should plug the step to extract the file instructions in the Pillar A , I forgot if I had put that on the first MVP . On the quote then we will be focused on Pillar A end to end Plus the EV charging pillar, correct? Take A look at what have put in the pdf in case I didnt mention that step needed to get the bin file from vehicle inthe MVP. Should we move forward ?
+
+
+yes, lets move forward.
+
+R
+rafaelgarcia142
+
+Jul 13, 5:19 AM
+Its paid

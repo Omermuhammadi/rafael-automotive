@@ -1,0 +1,14 @@
+[project]
+name = "mvdct"
+version = "0.1.0"
+description = "Multi-Vehicle Diagnostic & Calibration Tool (MVP) — Binary Studio + OCPP Sniffer"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+# Put the project root on sys.path so `import src...` and `import samples...` work
+# whether tests are run from the root or elsewhere.
+pythonpath = ["."]
+testpaths = ["tests"]
+# OCPP tests (Phases 3-4) are async; auto mode means no per-test decorator is needed.
+asyncio_mode = "auto"
+addopts = "-q"

@@ -1,0 +1,22 @@
+# ─── Core app ──────────────────────────────────────────────────────────────
+customtkinter>=5.2.0          # dark-mode tabbed desktop UI
+
+# ─── Pillar A: binary handling ─────────────────────────────────────────────
+bincopy>=20.0.0               # Intel HEX (.hex) / Motorola S-record (.s19) / .bin conversion
+crccheck>=1.3.0               # CRC16 / CRC32 and many named CRC variants
+numpy>=1.26.0                 # 2D/3D map representation (minimal use)
+
+# ─── Pillars C+D: OCPP / EV charging ───────────────────────────────────────
+ocpp>=2.0.0                   # provides v16 (used) + v201 message classes
+websockets>=12.0              # async transport for OCPP
+
+# ─── Hardware bridge (Pillar A vehicle I/O) ────────────────────────────────
+# Real path talks to the Tactrix J2534 .dll via ctypes (Python stdlib — no dep).
+# Dev/test path uses hardware/mock_ecu.py (pure software). Recommended: build the UDS
+# layer on a maintained library rather than hand-rolling service bytes:
+# udsoncan>=1.21
+# python-can>=4.3.0   # optional, only if a python-can J2534 backend is wired in for the cable
+
+# ─── Testing ───────────────────────────────────────────────────────────────
+pytest>=8.0.0
+pytest-asyncio>=0.23.0        # OCPP tests are async

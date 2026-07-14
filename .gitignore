@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Build / packaging
+build/
+dist/
+*.spec
+
+# Runtime output the tool writes (kept out of the repo; regenerate as needed)
+original_ecu_dump.bin
+patched_ecu_release.bin
+
+# Generated fixture is reproducible via `python -m samples.make_sample`; keep it out of VCS.
+samples/synthetic_ecu.bin
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

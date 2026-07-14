@@ -1,0 +1,20 @@
+{
+  "target": "example_ecu_1mb",
+  "_note": "Demo patch definitions whose offsets/bytes match samples/synthetic_ecu.bin, so the load -> apply -> validate(FAIL) -> repair(PASS) -> export flow works out of the box. This is sample data, not real vehicle modifications; a real patch file is the user's own domain and is never committed to this repo (SCOPE.md).",
+  "patches": [
+    {
+      "id": "reserved_region_override",
+      "description": "Demo byte override at the reserved patch-target region (0x1A2F0).",
+      "offset": "0x1A2F0",
+      "original": "AA BB CC DD EE FF 00 11",
+      "bytes": "00 11 22 33 44 55 66 77"
+    },
+    {
+      "id": "map2d_first_row_clamp",
+      "description": "Demo 2D map adjustment: clamp the first row of the 16x16 table at 0x1000.",
+      "offset": "0x1000",
+      "original": "00 01 02 03 04 05 06 07",
+      "bytes": "FF FF FF FF FF FF FF FF"
+    }
+  ]
+}

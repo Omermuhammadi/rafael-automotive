@@ -1,0 +1,460 @@
+<style>
+  * { box-sizing: border-box; }
+
+  :root {
+    --ground: #eef1f4;
+    --panel: #ffffff;
+    --panel-2: #f6f8fa;
+    --ink: #1a1d21;
+    --ink-muted: #59636f;
+    --ink-faint: #869099;
+    --line: #dfe4e9;
+    --accent: #2f7fbf;
+
+    /* semantic status — the app's own severity language */
+    --s-met: #1f9d57;      --s-met-bg: rgba(46,204,113,.13);
+    --s-plan: #2f7fbf;     --s-plan-bg: rgba(59,142,208,.13);
+    --s-bound: #b9840e;    --s-bound-bg: rgba(241,196,15,.16);
+    --s-out: #7a8592;      --s-out-bg: rgba(122,133,146,.14);
+    --s-tool: #7159a8;     --s-tool-bg: rgba(113,89,168,.13);
+
+    --mono: ui-monospace, "Cascadia Code", "Consolas", "SF Mono", Menlo, monospace;
+    --sans: ui-sans-serif, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #131619;
+      --panel: #1c2026;
+      --panel-2: #21262d;
+      --ink: #e7eaed;
+      --ink-muted: #9aa4af;
+      --ink-faint: #6c7580;
+      --line: #2a313a;
+      --accent: #59a6de;
+      --s-met: #35c47e;   --s-met-bg: rgba(46,204,113,.15);
+      --s-plan: #59a6de;  --s-plan-bg: rgba(59,142,208,.16);
+      --s-bound: #e6b53c; --s-bound-bg: rgba(241,196,15,.15);
+      --s-out: #8b95a1;   --s-out-bg: rgba(122,133,146,.16);
+      --s-tool: #a488db;  --s-tool-bg: rgba(140,110,205,.17);
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #eef1f4; --panel: #ffffff; --panel-2: #f6f8fa;
+    --ink: #1a1d21; --ink-muted: #59636f; --ink-faint: #869099; --line: #dfe4e9; --accent: #2f7fbf;
+    --s-met: #1f9d57; --s-met-bg: rgba(46,204,113,.13);
+    --s-plan: #2f7fbf; --s-plan-bg: rgba(59,142,208,.13);
+    --s-bound: #b9840e; --s-bound-bg: rgba(241,196,15,.16);
+    --s-out: #7a8592; --s-out-bg: rgba(122,133,146,.14);
+    --s-tool: #7159a8; --s-tool-bg: rgba(113,89,168,.13);
+  }
+  :root[data-theme="dark"] {
+    --ground: #131619; --panel: #1c2026; --panel-2: #21262d;
+    --ink: #e7eaed; --ink-muted: #9aa4af; --ink-faint: #6c7580; --line: #2a313a; --accent: #59a6de;
+    --s-met: #35c47e; --s-met-bg: rgba(46,204,113,.15);
+    --s-plan: #59a6de; --s-plan-bg: rgba(59,142,208,.16);
+    --s-bound: #e6b53c; --s-bound-bg: rgba(241,196,15,.15);
+    --s-out: #8b95a1; --s-out-bg: rgba(122,133,146,.16);
+    --s-tool: #a488db; --s-tool-bg: rgba(140,110,205,.17);
+  }
+
+  body { margin: 0; }
+  .wrap {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+    padding: clamp(20px, 4vw, 56px);
+    min-height: 100vh;
+  }
+  .sheet { max-width: 1120px; margin: 0 auto; }
+
+  /* ── header ── */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(26px, 4vw, 40px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    text-wrap: balance;
+    font-weight: 680;
+  }
+  .lede { color: var(--ink-muted); max-width: 68ch; margin: 0 0 18px; font-size: 16px; }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px 22px;
+    font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint);
+    padding-bottom: 22px; border-bottom: 1px solid var(--line);
+  }
+  .meta b { color: var(--ink-muted); font-weight: 600; }
+
+  /* ── coverage summary ── */
+  .summary {
+    margin: 26px 0 8px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .summary h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-muted); margin: 0 0 16px; font-weight: 600; }
+  .bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--panel-2); }
+  .bar span { display: block; }
+  .seg-met { background: var(--s-met); }
+  .seg-plan { background: var(--s-plan); }
+  .seg-bound { background: var(--s-bound); }
+  .seg-out { background: var(--s-out); }
+  .seg-tool { background: var(--s-tool); }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px 26px; margin-top: 18px; }
+  .legend > div { display: flex; align-items: baseline; gap: 9px; }
+  .dot { width: 10px; height: 10px; border-radius: 3px; transform: translateY(1px); flex: none; }
+  .legend .n { font-family: var(--mono); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 15px; }
+  .legend .k { font-weight: 600; }
+  .legend .d { color: var(--ink-faint); font-size: 13px; }
+
+  /* ── sections ── */
+  section { margin-top: 34px; }
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+  .sec-head h3 { font-size: 19px; margin: 0; letter-spacing: -0.01em; font-weight: 660; }
+  .sec-head .tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-faint); border: 1px solid var(--line); padding: 2px 8px; border-radius: 20px;
+  }
+  .sec-sub { color: var(--ink-muted); font-size: 14px; margin: 2px 0 16px; max-width: 74ch; }
+
+  .tbl-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+  table { width: 100%; border-collapse: collapse; min-width: 720px; }
+  thead th {
+    text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--ink-faint); font-weight: 600; padding: 12px 16px; border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+  }
+  tbody td { padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { position: relative; }
+  .req { font-weight: 560; color: var(--ink); }
+  .req .sub { display: block; font-weight: 400; color: var(--ink-muted); font-size: 13px; margin-top: 3px; }
+  td.src { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); white-space: nowrap; }
+  td.note { color: var(--ink-muted); font-size: 13.5px; }
+  code, .kbd {
+    font-family: var(--mono); font-size: 12.5px;
+    background: var(--panel-2); border: 1px solid var(--line);
+    padding: 1px 5px; border-radius: 5px; color: var(--ink);
+  }
+
+  /* status cell: stripe + pill */
+  td.st { white-space: nowrap; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12.5px; font-weight: 620; padding: 4px 11px 4px 9px; border-radius: 20px;
+    border: 1px solid transparent;
+  }
+  .pill .pdot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .st-met .pill { color: var(--s-met); background: var(--s-met-bg); }   .st-met .pdot { background: var(--s-met); }
+  .st-plan .pill { color: var(--s-plan); background: var(--s-plan-bg); } .st-plan .pdot { background: var(--s-plan); }
+  .st-bound .pill { color: var(--s-bound); background: var(--s-bound-bg); } .st-bound .pdot { background: var(--s-bound); }
+  .st-out .pill { color: var(--s-out); background: var(--s-out-bg); }    .st-out .pdot { background: var(--s-out); }
+  .st-tool .pill { color: var(--s-tool); background: var(--s-tool-bg); } .st-tool .pdot { background: var(--s-tool); }
+  .phase { display: block; font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-top: 5px; }
+
+  /* ── scope callout ── */
+  .callout {
+    margin-top: 34px; background: var(--panel); border: 1px solid var(--line);
+    border-left: 3px solid var(--s-bound); border-radius: 12px; padding: 22px 24px;
+  }
+  .callout h3 { margin: 0 0 6px; font-size: 18px; }
+  .callout p { color: var(--ink-muted); margin: 0 0 14px; max-width: 78ch; }
+  .callout ul { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 10px; }
+  .callout li { display: grid; grid-template-columns: 150px 1fr; gap: 14px; align-items: baseline; }
+  .callout li .what { font-weight: 620; }
+  .callout li .why { color: var(--ink-muted); font-size: 13.5px; }
+  @media (max-width: 620px) { .callout li { grid-template-columns: 1fr; gap: 3px; } }
+
+  footer { margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 12.5px; }
+  footer code { font-size: 11.5px; }
+</style>
+
+<div class="wrap">
+  <div class="sheet">
+
+    <p class="eyebrow">Requirements traceability</p>
+    <h1>Client spec &rarr; build coverage</h1>
+    <p class="lede">
+      Every requirement in <b>client_spec.pdf</b> and <b>client_spec&nbsp;v2&nbsp;updated.pdf</b>, mapped
+      to its place in the build — what is delivered and verified today, what is scheduled, what is
+      deliberately bounded, and what sits outside the accepted offer (with the reason on record).
+    </p>
+    <div class="meta">
+      <span><b>Project</b>&nbsp; Multi-Vehicle Diagnostic &amp; Calibration Tool (MVP)</span>
+      <span><b>As of</b>&nbsp; 2026-07-13</span>
+      <span><b>Status</b>&nbsp; Phases 0–6 complete &middot; 94 tests (93 pass, 1 env-skip) &middot; shipped, hardened &amp; documented</span>
+    </div>
+
+    <!-- ── coverage summary ── -->
+    <div class="summary">
+      <h2>Coverage at a glance — 29 requirement line items</h2>
+      <div class="bar" role="img" aria-label="Coverage: 21 delivered, 0 scheduled, 2 bounded, 4 out of scope, 2 tooling">
+        <span class="seg-met"  style="width:72.4%"></span>
+        <span class="seg-bound" style="width:6.9%"></span>
+        <span class="seg-out"  style="width:13.8%"></span>
+        <span class="seg-tool" style="width:6.9%"></span>
+      </div>
+      <div class="legend">
+        <div><span class="dot" style="background:var(--s-met)"></span><span class="n">21</span>&nbsp;<span class="k">Delivered</span> <span class="d">built &amp; verified (Ph 0–5)</span></div>
+        <div><span class="dot" style="background:var(--s-plan)"></span><span class="n">0</span>&nbsp;<span class="k">Scheduled</span> <span class="d">all in-scope shipped</span></div>
+        <div><span class="dot" style="background:var(--s-bound)"></span><span class="n">2</span>&nbsp;<span class="k">Bounded</span> <span class="d">doable slice in, open-ended part out</span></div>
+        <div><span class="dot" style="background:var(--s-out)"></span><span class="n">4</span>&nbsp;<span class="k">Out of scope</span> <span class="d">per SCOPE.md</span></div>
+        <div><span class="dot" style="background:var(--s-tool)"></span><span class="n">2</span>&nbsp;<span class="k">Tooling</span> <span class="d">substituted &amp; noted</span></div>
+      </div>
+    </div>
+
+    <!-- ── Pillar A ── -->
+    <section>
+      <div class="sec-head"><h3>Pillar A — Binary Studio (ICE ECU)</h3><span class="tag">Tab 1 &middot; in scope</span></div>
+      <p class="sec-sub">Load a raw dump, read identifiers, patch at known offsets, validate &amp; repair checksum, and read/write the ECU over J2534 (software-validated here, on-vehicle validated by the client).</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Requirement</th><th>Source</th><th>Status</th><th>Where it lives / why</th></tr></thead>
+          <tbody>
+            <tr class="st-met">
+              <td class="req">Read/write raw dumps — <code>.bin</code>, <code>.hex</code>, <code>.s19</code><span class="sub">File I/O stream over EEPROM/Flash images</span></td>
+              <td class="src">Brief · A</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 1</span></td>
+              <td class="note"><code>binfile.py</code> — raw + Intel-HEX/S-record via <code>bincopy</code>. 7 tests.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Visual hex viewer with address offsets<span class="sub">Scrollable, monospace, offset gutter + ASCII</span></td>
+              <td class="src">Brief · Tab 1<br>v2 · A/Step 2</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 1</span></td>
+              <td class="note"><code>hexview.py</code> + virtualised widget (1 MiB scrolls instantly). 8 tests + screenshot.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">CALID identification at fixed offset<span class="sub">Sample CALID <code>1267394012</code></span></td>
+              <td class="src">v2 · A/Step 2</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 1</span></td>
+              <td class="note"><code>identifiers.py</code> — reads &amp; displays exact spec value.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">CVN identification at fixed offset<span class="sub">Sample CVN <code>4A8B2C1E</code></span></td>
+              <td class="src">v2 · A/Step 2</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 1</span></td>
+              <td class="note"><code>identifiers.py</code> — hex-kind read, exact spec value.</td>
+            </tr>
+            <tr class="st-bound">
+              <td class="req">Hex/Map "hunting matrix"<span class="sub">Locate 2D/3D maps, axes, DTC tables</span></td>
+              <td class="src">Brief · A<br>v2 · A/Step 2</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Bounded</span></td>
+              <td class="note"><b>In:</b> scan at <i>fixed offsets</i> from a definition (the spec's own "scans fixed offsets"). <b>Out:</b> auto-discovering maps in unknown binaries — an open-ended research problem (SCOPE.md).</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Checksum — CRC16 / CRC32 / block-sum<span class="sub">Verify integrity before "safe to flash"</span></td>
+              <td class="src">Brief · A<br>v2 · A/Step 3</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 2</span></td>
+              <td class="note"><code>checksum.py</code> — one <code>validate()/repair()</code> interface over three algorithms. 5 tests.</td>
+            </tr>
+            <tr class="st-bound">
+              <td class="req">Bosch / manufacturer-specific checksum<span class="sub">Vendor sum-check schemes</span></td>
+              <td class="src">Brief · A</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Bounded</span><span class="phase">Phase 2</span></td>
+              <td class="note">General CRC interface shipped; <b>in:</b> one ECU-specific scheme if cheap for the target. <b>Out:</b> a universal manufacturer-checksum engine (SCOPE.md).</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Apply patch at known offsets from external config<span class="sub">On-board patch drop-down → override byte arrays</span></td>
+              <td class="src">Brief · A<br>v2 · A/Step 3</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 2</span></td>
+              <td class="note"><code>patches.py</code> + <code>example_patches.json</code>. Runtime patch file (repo stays neutral); verifies original bytes before writing.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Validate → FAIL (red) → Patch checksum → PASS (green)<span class="sub">Output <code>patched_ecu_release.bin</code></span></td>
+              <td class="src">v2 · A/Step 3</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 2</span></td>
+              <td class="note">Full apply → mismatch → repair → export flow wired in Tab 1; verified by tests + screenshots.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Extract ECU binary over UDS/J2534<span class="sub"><code>0x10 03</code> · <code>0x27</code> seed/key · <code>0x35</code> · <code>0x36</code> loop → <code>original_ecu_dump.bin</code></span></td>
+              <td class="src">v2 · A/Step 1</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 5</span></td>
+              <td class="note"><code>uds.py</code> + <code>mock_ecu.py</code> — full 0x35/0x36 sequence round-trips against the software ECU; test asserts the exact command order.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Write binary back to ECU<span class="sub"><code>0x10 02</code> · <code>0x27</code> · <code>0x34</code> · <code>0x36</code> · <code>0x11 01</code></span></td>
+              <td class="src">v2 · A/Step 4</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 5</span></td>
+              <td class="note">Same <code>Transport</code> seam: 0x34/0x36/0x11 write-back verified against the mock (ECU memory holds the patched image).</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Interface dropdown — Mock ECU / Tactrix J2534<span class="sub">Initialize Interface · CAN 500 kbps · ISO 15765</span></td>
+              <td class="src">v2 · A/Step 1</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 5</span></td>
+              <td class="note"><code>j2534.py</code> — Tactrix <code>.dll</code> via <code>ctypes</code>, interchangeable with the mock; defaults to Mock ECU. Real cable = client validates on the vehicle.</td>
+            </tr>
+            <tr class="st-out">
+              <td class="req">On-vehicle read/write validation<span class="sub">Real Tactrix cable on a real ECU</span></td>
+              <td class="src">v2 · A</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Client-side</span></td>
+              <td class="note">Physics, not caution: the driver only talks to the USB cable and the seed/key only completes against the real ECU. Validated on the client's 2014 Charger / 2015 Silverado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Pillar C + D ── -->
+    <section>
+      <div class="sec-head"><h3>Pillars C + D — OCPP Sniffer &amp; Billing Triage</h3><span class="tag">Tab 3 &middot; in scope</span></div>
+      <p class="sec-sub">Local mock CSMS, a simulated charge point, a colour-coded live frame log, fault triage, a JSON deep-dive inspector, and remote station reset — all with zero hardware.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Requirement</th><th>Source</th><th>Status</th><th>Where it lives / why</th></tr></thead>
+          <tbody>
+            <tr class="st-met">
+              <td class="req">Local mock CSMS proxy over WebSockets (OCPP 1.6J)<span class="sub">Start Local Central System Proxy</span></td>
+              <td class="src">Brief · C<br>v2 · C&amp;D</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 3</span></td>
+              <td class="note"><code>csms.py</code> — mock CSMS on <code>ws://localhost:9000</code>, ocpp v1.6 handlers. Live client↔server tested.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Simulated charge point (no hardware)<span class="sub">Boot → Authorize → Start → Heartbeat → Stop</span></td>
+              <td class="src">v2 · C&amp;D</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 3</span></td>
+              <td class="note"><code>charge_point_sim.py</code> — a real client running a full session; zero hardware.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Colour-coded live frame log<span class="sub">Green accepted · orange in-flight · red failed/drop</span></td>
+              <td class="src">Brief · Tab 3<br>v2 · C&amp;D</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 3</span></td>
+              <td class="note">Sniffer taps every frame → <code>LogBus</code> → coloured by <code>Severity</code>. Verified by tests + screenshot.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Capture &amp; analyse billing payloads<span class="sub"><code>Authorize.req</code>, <code>StartTransaction.req</code></span></td>
+              <td class="src">Brief · D<br>v2 · C&amp;D</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 3</span></td>
+              <td class="note"><code>sniffer.py</code>+<code>triage.py</code> capture &amp; classify (accept→green, reject→red). Deep-dive inspector: Phase 4.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Triage a broken transaction<span class="sub"><code>StartTransaction.conf → Status: Invalid</code> turns red</span></td>
+              <td class="src">v2 · C&amp;D</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 4</span></td>
+              <td class="note"><code>scenarios.py</code> — 8-scenario fault library (bad auth, timeout, malformed, rejected boot…). Headless: <code>--run all</code>.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Deep-dive JSON audit<span class="sub">Flag bad token format / missing certification tag</span></td>
+              <td class="src">v2 · C&amp;D</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 4</span></td>
+              <td class="note"><code>inspector.py</code> — click a red line → JSON sidebar highlights the offending field (an idTag-as-number = bad token format).</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Force remote station reset<span class="sub"><code>Reset.req { "type": "Hard" }</code></span></td>
+              <td class="src">v2 · C&amp;D</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 4</span></td>
+              <td class="note">Operator button → CSMS sends Reset (Hard) → the sim CP acknowledges and reboots.</td>
+            </tr>
+            <tr class="st-out">
+              <td class="req">OCPP 2.0.1<span class="sub">Second protocol version</span></td>
+              <td class="src">Brief · C</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Out of scope</span></td>
+              <td class="note">MVP targets <b>1.6J only</b> (SCOPE.md). 2.0.1 is an additive follow-on, not a blocker.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Pillar B ── -->
+    <section>
+      <div class="sec-head"><h3>Pillar B — Telematics &amp; Live OBD-II</h3><span class="tag">Tab 2 &middot; not in offer</span></div>
+      <p class="sec-sub">Excluded from the accepted two-pillar offer. Listed here for completeness so nothing in the brief is silently dropped.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Requirement</th><th>Source</th><th>Status</th><th>Where it lives / why</th></tr></thead>
+          <tbody>
+            <tr class="st-out">
+              <td class="req">Live OBD-II stream — PIDs, RPM, battery SoC, active DTCs<span class="sub"><code>python-obd</code> / <code>python-can</code> · ELM327 / STN adapter</span></td>
+              <td class="src">Brief · B<br>v2 · B</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Out of scope</span></td>
+              <td class="note">Tab 2 is outside the accepted offer (SCOPE.md). Genuine validation also needs a physical adapter + vehicle.</td>
+            </tr>
+            <tr class="st-out">
+              <td class="req">Clear DTC &amp; reset module<span class="sub">Mode 04 wipe over CAN</span></td>
+              <td class="src">v2 · B</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Out of scope</span></td>
+              <td class="note">Same boundary as the live stream above.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Platform & tooling ── -->
+    <section>
+      <div class="sec-head"><h3>Platform, UI &amp; tooling</h3><span class="tag">cross-cutting</span></div>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Requirement</th><th>Source</th><th>Status</th><th>Where it lives / why</th></tr></thead>
+          <tbody>
+            <tr class="st-met">
+              <td class="req">Open-source, Python desktop suite<span class="sub">No paid licensing</span></td>
+              <td class="src">Brief · 1</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 0</span></td>
+              <td class="note">Python 3.14, all-open-source deps.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Clean tabbed dark UI (CustomTkinter)<span class="sub">Field-triage dashboard</span></td>
+              <td class="src">Brief · 4</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 0</span></td>
+              <td class="note"><code>shell.py</code> — two-tab dark window; Tab 1 fully populated.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req">Test without physical hardware<span class="sub">Software mock validation</span></td>
+              <td class="src">Brief · 1/3</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">design</span></td>
+              <td class="note">Whole architecture assumes no hardware — mock ECU + simulated CP behind swappable seams.</td>
+            </tr>
+            <tr class="st-met">
+              <td class="req"><code>numpy</code> for map structures<span class="sub">Multi-dimensional calibration arrays</span></td>
+              <td class="src">Brief · 3</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Delivered</span><span class="phase">Phase 0</span></td>
+              <td class="note">Known 2D/3D map regions in the synthetic fixture; more in Phase 2.</td>
+            </tr>
+            <tr class="st-tool">
+              <td class="req">Cursor IDE as the build environment<span class="sub">"Cursor's built-in execution environment"</span></td>
+              <td class="src">Brief · 3/5</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Substituted</span></td>
+              <td class="note">Built with Claude Code instead — the deliverable runs in any terminal; no IDE provides emulation (CLAUDE.md §4/§6). No effect on the product.</td>
+            </tr>
+            <tr class="st-tool">
+              <td class="req"><code>unittest.mock</code> as the "emulator"<span class="sub">Simulate ECU streams / WebSocket payloads</span></td>
+              <td class="src">Brief · 3</td>
+              <td class="st"><span class="pill"><span class="pdot"></span>Substituted</span></td>
+              <td class="note">Upgraded: the live sims are <i>real</i> components (<code>mock_ecu</code>, <code>charge_point_sim</code>), with <code>unittest.mock</code> reserved for unit tests — simulation ≠ mocking.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── scope decisions ── -->
+    <div class="callout">
+      <h3>Scope decisions on record</h3>
+      <p>The build draws two kinds of deliberate line: <b>four</b> requirements sit fully outside the accepted offer, and <b>two</b> more are bounded to their doable slice — grouped below as five decisions (Pillar B covers two rows). None are omissions; each was agreed up front in <code>SCOPE.md</code> to protect a 7-day delivery of the two pillars that were paid for. Any can be pulled into scope — that's a scope-and-timeline call for you to make.</p>
+      <ul>
+        <li><span class="what">Pillar B / Tab 2</span><span class="why">Live OBD-II telematics. Needs a physical ELM327/STN adapter + vehicle to validate honestly; wasn't part of the two-pillar offer.</span></li>
+        <li><span class="what">OCPP 2.0.1</span><span class="why">MVP is 1.6J only. 2.0.1 is additive and can layer on later without rework.</span></li>
+        <li><span class="what">Map auto-discovery</span><span class="why">Reverse-engineering maps from <i>unknown</i> binaries has no finish line. Fixed-offset scanning — the spec's own wording — <i>is</i> included.</span></li>
+        <li><span class="what">Universal checksum engine</span><span class="why">Every ECU family rolls its own scheme. CRC16/32 + block-sum ship; one ECU-specific scheme if the target is cheap.</span></li>
+        <li><span class="what">On-vehicle I/O validation</span><span class="why">The real cable path is validated by you, on your vehicles — the seam is built and mock-proven on our side.</span></li>
+      </ul>
+    </div>
+
+    <footer>
+      Generated 2026-07-13 · sources: <code>docs/client_spec.pdf</code>, <code>docs/client_spec v2 updated.pdf</code> · scope of record: <code>docs/SCOPE.md</code>, <code>CLAUDE.md</code> · plan: <code>docs/BUILD_PLAN.md</code>. Status reflects Phases 0–6 complete with 94 tests (93 pass, 1 environment-skip) — every in-scope requirement is delivered and hardened; shipped with README, demo checklist (docs/DEMO_CHECKLIST.md), and packaging (run.bat / PyInstaller notes).
+    </footer>
+
+  </div>
+</div>
