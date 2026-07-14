@@ -125,6 +125,11 @@ the pass-through device performs the ISO-TP framing. To use it on the vehicle:
 
 The same scenarios run headless via `python -m src.ocpp_triage.scenarios --run all`.
 
+**Using it with a real charging station** (the expected next step): point the station's
+Central-System / backend URL at `ws://<laptop-ip>:9000`. The sniffer, the colour-coded triage,
+the JSON inspector, and remote reset work identically against real OCPP 1.6J traffic — the
+simulated charge point above is only for demoing without a station.
+
 ---
 
 ## Project layout

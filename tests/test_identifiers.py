@@ -50,3 +50,10 @@ def test_ascii_null_padding_is_trimmed() -> None:
     buf = b"AB\x00\x00\x00\x00"
     f = identifiers.read_identifier(buf, "calid", {"offset": 0, "len": 6, "kind": "ascii"})
     assert f.title == "CALID: AB"
+
+
+def test_identifiers_on_empty_or_truncated_buffer_fail_gracefully() -> None:
+    # Loading a zero-byte or truncated dump must not crash — every identifier is out of range.
+    for buf in (b"", b"\x01\x02\x03\x04\x05\x06\x07\x08"):
+        findings = identifiers.read_identifiers(buf, ms.LAYOUT)
+        assert findings and all(f.severity is Severity.FAIL for f in findings)

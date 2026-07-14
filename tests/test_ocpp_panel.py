@@ -73,6 +73,18 @@ def test_fault_scenario_then_inspect_red_line() -> None:
         app.destroy()
 
 
+def test_run_scenario_before_start_is_guarded() -> None:
+    app = _app()
+    panel = app.ocpp_panel
+    try:
+        assert panel.run_scenario() is None  # proxy not started
+        app.update()
+        assert "Start the proxy" in panel._status.cget("text")  # noqa: SLF001
+    finally:
+        panel.shutdown()
+        app.destroy()
+
+
 def test_force_remote_reset_button() -> None:
     app = _app()
     panel = app.ocpp_panel

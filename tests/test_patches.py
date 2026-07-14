@@ -66,6 +66,18 @@ def test_bad_length_patch_file_raises(tmp_path) -> None:
         patches.load_patch_defs(bad)
 
 
+def test_missing_patch_file_raises() -> None:
+    with pytest.raises(FileNotFoundError):
+        patches.load_patch_defs("nope/missing_patches.json")
+
+
+def test_invalid_json_patch_file_raises(tmp_path) -> None:
+    bad = tmp_path / "notjson.json"
+    bad.write_text("{not valid json")
+    with pytest.raises(ValueError):
+        patches.load_patch_defs(bad)
+
+
 def test_end_to_end_patch_then_checksum_repair() -> None:
     """The Pillar-A software guarantee: apply -> validate FAIL -> repair -> validate PASS -> export bytes."""
     buf = bytearray(ms.build_sample())

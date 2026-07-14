@@ -3,6 +3,12 @@
 A ~5-minute walkthrough that shows everything working with only the bundled sample data and the
 software mock backends. No cable, no vehicle, no charger.
 
+> **The headline capability** (the "failure list" you flagged as the detail that was missing):
+> the OCPP fault triage in **Section 2** — it pinpoints *exactly* where a charging/payment
+> transaction breaks (bad auth, timeout, malformed token, dropped session, rejected boot) and
+> shows the offending field in the JSON. **Section 1** is the ICE binary/checksum pillar you asked
+> to build first. Lead the demo with whichever the client wants to see; both need zero hardware.
+
 ## 0. One-time setup
 
 - [ ] `pip install -r requirements.txt`

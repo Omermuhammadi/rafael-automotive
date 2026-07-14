@@ -121,3 +121,26 @@ async def test_csms_negotiates_and_locks_ocpp16() -> None:
             assert ws.subprotocol == SUBPROTOCOL == "ocpp1.6"  # Sec-WebSocket-Protocol negotiated
     finally:
         await server.stop()
+
+
+async def test_abrupt_charge_point_disconnect_is_handled_cleanly() -> None:
+    import asyncio
+
+    import websockets
+
+    from src.ocpp_triage.csms import SUBPROTOCOL
+
+    bus = LogBus()
+    port = _free_port()
+    server = MockCsmsServer(bus, host="localhost", port=port)
+    await server.start()
+    try:
+        ws = await websockets.connect(f"ws://localhost:{port}/CP_DROP", subprotocols=[SUBPROTOCOL])
+        await ws.send('[2,"1","BootNotification",{"chargePointModel":"X","chargePointVendor":"Y"}]')
+        await ws.recv()
+        await ws.close()  # drop mid-session (no StopTransaction) — server must not crash
+        await asyncio.sleep(0.2)
+    finally:
+        await server.stop()
+    findings = [f for f in bus.drain() if f.source is Source.OCPP]
+    assert any("disconnected" in f.title for f in findings)

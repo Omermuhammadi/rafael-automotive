@@ -139,6 +139,18 @@ def test_hardware_initialize_extract_writeback(tmp_path, monkeypatch) -> None:
         app.destroy()
 
 
+def test_write_before_init_is_guarded() -> None:
+    app = _app()
+    panel = app.binary_panel
+    try:
+        panel._on_write()  # noqa: SLF001 — no transport, no buffer
+        app.update()
+        status = panel._hw_status.cget("text").lower()  # noqa: SLF001
+        assert "initialize" in status or "first" in status
+    finally:
+        app.destroy()
+
+
 def test_j2534_backend_reports_no_driver() -> None:
     app = _app()
     panel = app.binary_panel

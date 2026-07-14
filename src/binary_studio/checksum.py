@@ -66,11 +66,30 @@ def _compute(buf: bytes, region: slice, algo: str, width: int) -> int:
     return value & mask
 
 
+def _bounds_error(buf: bytes, region: slice, stored: slice) -> str | None:
+    """Return a message if region/stored fall outside the image; None if both are valid.
+
+    Guards against a layout whose region/stored offsets exceed the loaded file (e.g. loading a
+    sub-1 MB image against the 1 MB demo layout) — otherwise ``repair`` would silently grow the
+    buffer via slice assignment and report success.
+    """
+    n = len(buf)
+    for name, sl in (("checksum region", region), ("stored-checksum slice", stored)):
+        start = sl.start or 0
+        stop = sl.stop if sl.stop is not None else n
+        if start < 0 or stop > n or start >= stop:
+            return f"{name} {start:#x}..{stop:#x} is outside the {n:,}-byte image"
+    return None
+
+
 def validate(buf: bytes, region: slice, stored: slice, algo: str, endian: str = "big") -> Finding:
     """Compare the freshly computed checksum over ``region`` to the value in ``stored``.
 
     Returns an OK Finding on a match, or a FAIL Finding (with expected vs. found) on mismatch.
     """
+    problem = _bounds_error(buf, region, stored)
+    if problem is not None:
+        return Finding(Source.BINARY, Severity.FAIL, "Checksum out of range", problem)
     width = stored.stop - stored.start
     computed = _compute(buf, region, algo, width)
     current = int.from_bytes(bytes(buf[stored]), endian)
@@ -92,6 +111,10 @@ def validate(buf: bytes, region: slice, stored: slice, algo: str, endian: str = 
 
 def repair(buf: bytearray, region: slice, stored: slice, algo: str, endian: str = "big") -> Finding:
     """Recompute the checksum over ``region`` and write it into ``stored``. Returns an OK Finding."""
+    problem = _bounds_error(buf, region, stored)
+    if problem is not None:
+        return Finding(Source.BINARY, Severity.FAIL, "Checksum out of range",
+                       f"{problem} — nothing written.")
     width = stored.stop - stored.start
     computed = _compute(buf, region, algo, width)
     buf[stored] = computed.to_bytes(width, endian)

@@ -58,3 +58,18 @@ def test_unknown_suffix_loads_raw(tmp_path) -> None:
 def test_missing_file_raises() -> None:
     with pytest.raises(FileNotFoundError):
         binfile.load("this/does/not/exist.bin")
+
+
+def test_malformed_hex_raises(tmp_path) -> None:
+    # A .hex that is not valid Intel HEX must raise (the panel catches this and shows an error).
+    p = tmp_path / "bad.hex"
+    p.write_text("this is not intel hex\n")
+    with pytest.raises(Exception):
+        binfile.load(p)
+
+
+def test_zero_byte_bin_loads_empty(tmp_path) -> None:
+    p = tmp_path / "empty.bin"
+    p.write_bytes(b"")
+    assert binfile.load(p) == bytearray()
+    assert binfile.size(binfile.load(p)) == 0

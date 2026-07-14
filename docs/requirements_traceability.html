@@ -193,7 +193,7 @@
     <div class="meta">
       <span><b>Project</b>&nbsp; Multi-Vehicle Diagnostic &amp; Calibration Tool (MVP)</span>
       <span><b>As of</b>&nbsp; 2026-07-13</span>
-      <span><b>Status</b>&nbsp; Phases 0–6 complete &middot; 94 tests (93 pass, 1 env-skip) &middot; shipped, hardened &amp; documented</span>
+      <span><b>Status</b>&nbsp; Phases 0–6 + finalization QA &middot; 103 tests (green) &middot; 1 defect found &amp; fixed with a regression test</span>
     </div>
 
     <!-- ── coverage summary ── -->
@@ -453,7 +453,7 @@
     </div>
 
     <footer>
-      Generated 2026-07-13 · sources: <code>docs/client_spec.pdf</code>, <code>docs/client_spec v2 updated.pdf</code> · scope of record: <code>docs/SCOPE.md</code>, <code>CLAUDE.md</code> · plan: <code>docs/BUILD_PLAN.md</code>. Status reflects Phases 0–6 complete with 94 tests (93 pass, 1 environment-skip) — every in-scope requirement is delivered and hardened; shipped with README, demo checklist (docs/DEMO_CHECKLIST.md), and packaging (run.bat / PyInstaller notes).
+      Generated 2026-07-13 · sources: <code>docs/client_spec.pdf</code>, <code>docs/client_spec v2 updated.pdf</code> · scope of record: <code>docs/SCOPE.md</code>, <code>CLAUDE.md</code> · plan: <code>docs/BUILD_PLAN.md</code>. Status reflects Phases 0–6 plus a pre-delivery finalization QA pass: 103 tests, deterministically green (run 4×); one checksum-bounds defect found and fixed with a regression test (see docs/FINALIZATION_CHECKLIST.md). The J2534 real-cable I/O is delivered but validated on the vehicle — the one "delivered but lightly tested" row.
     </footer>
 
   </div>

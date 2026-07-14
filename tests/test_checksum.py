@@ -54,3 +54,18 @@ def test_unknown_algo_raises() -> None:
     buf = bytearray(16)
     with pytest.raises(ValueError):
         checksum.validate(buf, slice(0, 12), slice(12, 16), "sha256")
+
+
+def test_out_of_range_region_or_stored_is_rejected_without_corrupting() -> None:
+    # Reachable from the UI: loading a sub-1 MB image against the 1 MB demo layout puts the
+    # region/stored offsets past the end. repair() must not silently grow the buffer.
+    buf = bytearray(64)
+    v = checksum.validate(buf, slice(0, 60), slice(1000, 1004), "crc32")
+    assert v.severity is Severity.FAIL and "out of range" in v.title.lower()
+
+    before = bytes(buf)
+    r = checksum.repair(buf, slice(0, 60), slice(1000, 1004), "crc32")
+    assert r.severity is Severity.FAIL
+    assert bytes(buf) == before  # buffer unchanged — no silent extend
+
+    assert checksum.validate(buf, slice(0, 10_000), slice(60, 64), "crc32").severity is Severity.FAIL
