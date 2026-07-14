@@ -26,8 +26,8 @@ software mock backends. No cable, no vehicle, no charger.
 
 **Patch → checksum → export**
 - [ ] `Load Patches` → `samples/example_patches.json`
-- [ ] Pick `reserved_region_override` → `Apply Fix` (view jumps to `0x1A2F0`, bytes change)
-- [ ] `Validate` → **red: FAIL — checksum mismatch**
+- [ ] Pick `reserved_region_override` → `Apply Fix Layout` (view jumps to `0x1A2F0`, bytes change)
+- [ ] `Validate Checksum` → **red: FAIL — checksum mismatch**
 - [ ] `Patch Checksum` → **green: PASS** with the new CRC32
 - [ ] `Export .bin` → save `patched_ecu_release.bin`
 
@@ -42,7 +42,7 @@ software mock backends. No cable, no vehicle, no charger.
 
 ## 2. Pillars C + D — OCPP Sniffer (Tab 3)
 
-- [ ] `Start Central System Proxy` → status: "Listening on ws://localhost:9000 (OCPP 1.6J)"
+- [ ] `Start Local Central System Proxy` → status: "Listening on ws://localhost:9000 (OCPP 1.6J)"
 - [ ] Scenario = `Happy path` → `Run Scenario` → a full **green** session
   (Boot → Authorize → Start → Heartbeat → Stop)
 - [ ] Scenario = `Transaction invalid` → `Run Scenario` → `StartTransaction.conf` turns **red**

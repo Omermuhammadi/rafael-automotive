@@ -25,10 +25,10 @@ python -m src.main                   # launch the app (two-tab dark window)
 Then:
 
 - **Tab 1:** `Load Bin File` → pick `samples/synthetic_ecu.bin` → the hex view and CALID/CVN
-  populate. `Load Patches` → pick `samples/example_patches.json` → choose a patch → `Apply Fix`
-  → `Validate` (goes **red: mismatch**) → `Patch Checksum` (goes **green: PASS**) →
+  populate. `Load Patches` → pick `samples/example_patches.json` → choose a patch → `Apply Fix Layout`
+  → `Validate Checksum` (goes **red: mismatch**) → `Patch Checksum` (goes **green: PASS**) →
   `Export .bin`.
-- **Tab 3:** `Start Central System Proxy` → pick a `Scenario` → `Run Scenario`. Watch the
+- **Tab 3:** `Start Local Central System Proxy` → pick a `Scenario` → `Run Scenario`. Watch the
   colour-coded frames; click a **red** line to inspect its JSON; try `Force Remote Station Reset`.
 
 Headless OCPP demo (no UI, no hardware):
@@ -57,7 +57,7 @@ pytest -q
 2. **Calibration Identifiers** (right sidebar) are read at fixed offsets from the loaded layout
    (CALID / CVN).
 3. **Patch → checksum:** `Load Patches` reads an external patch-definition file (see below),
-   `Apply Fix` writes the bytes (verifying the original bytes first), `Validate` / `Patch
+   `Apply Fix Layout` writes the bytes (verifying the original bytes first), `Validate Checksum` / `Patch
    Checksum` run the selected algorithm (`crc32` / `crc16` / `blocksum`), and `Export .bin`
    writes the result (default `patched_ecu_release.bin`).
 
@@ -113,7 +113,7 @@ the pass-through device performs the ISO-TP framing. To use it on the vehicle:
 
 ## Pillars C + D — OCPP Sniffer (Tab 3)
 
-- `Start Central System Proxy` binds a local mock CSMS on `ws://localhost:9000`, speaking
+- `Start Local Central System Proxy` binds a local mock CSMS on `ws://localhost:9000`, speaking
   **OCPP 1.6J** (the subprotocol is negotiated and locked).
 - `Scenario` + `Run Scenario` plays a simulated charge point through one of **8 scenarios**:
   happy path, invalid auth token, auth timeout, malformed payload, rejected boot, transaction

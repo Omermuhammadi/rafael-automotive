@@ -32,8 +32,8 @@ class AppShell(ctk.CTk):
         self._drain_after_id: str | None = None
 
         self.title(WINDOW_TITLE)
-        self.geometry("1120x740")
-        self.minsize(920, 620)
+        self.geometry("1200x760")  # room for the spec's full button labels on the Tab 1 toolbar
+        self.minsize(1040, 620)
         self.configure(fg_color=theme.BG)
 
         self._build_tabs()

@@ -87,7 +87,7 @@ class OcppSnifferPanel(ctk.CTkFrame):
         bar = ctk.CTkFrame(self, fg_color="transparent")
         bar.grid(row=0, column=0, columnspan=2, sticky="ew", padx=12, pady=(12, 4))
 
-        self._start_btn = ctk.CTkButton(bar, text="Start Central System Proxy", width=190,
+        self._start_btn = ctk.CTkButton(bar, text="Start Local Central System Proxy", width=235,
                                         command=self._on_start)
         self._start_btn.pack(side="left")
         self._stop_btn = ctk.CTkButton(bar, text="Stop", width=64, command=self._on_stop,
@@ -172,7 +172,7 @@ class OcppSnifferPanel(ctk.CTkFrame):
     def _log_empty_hint(self) -> None:
         self._log.configure(state="normal")
         self._log.insert("1.0",
-                         "  Start the Central System Proxy, then run a scenario.\n"
+                         "  Start the Local Central System Proxy, then run a scenario.\n"
                          "  Green = accepted, orange = in flight, red = failed. Click a red line to inspect.\n")
         self._log.configure(state="disabled")
 

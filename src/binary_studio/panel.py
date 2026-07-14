@@ -271,7 +271,8 @@ class BinaryStudioPanel(ctk.CTkFrame):
                                              command=self._on_patch_selected)
         self._patch_menu.set(_PATCH_PLACEHOLDER)
         self._patch_menu.pack(side="left", padx=6, pady=8)
-        self._apply_btn = ctk.CTkButton(bar, text="Apply Fix", width=90, command=self._on_apply_patch)
+        self._apply_btn = ctk.CTkButton(bar, text="Apply Fix Layout", width=130,
+                                        command=self._on_apply_patch)
         self._apply_btn.pack(side="left", padx=6, pady=8)
 
         # Checksum + export group (right)
@@ -280,7 +281,7 @@ class BinaryStudioPanel(ctk.CTkFrame):
         self._repair_btn = ctk.CTkButton(bar, text="Patch Checksum", width=130,
                                          command=self._on_patch_checksum)
         self._repair_btn.pack(side="right", padx=6, pady=8)
-        self._validate_btn = ctk.CTkButton(bar, text="Validate", width=90,
+        self._validate_btn = ctk.CTkButton(bar, text="Validate Checksum", width=140,
                                            command=self._on_validate_checksum)
         self._validate_btn.pack(side="right", padx=6, pady=8)
         self._algo_menu = ctk.CTkOptionMenu(bar, width=100,
